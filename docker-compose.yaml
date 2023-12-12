@@ -1,0 +1,35 @@
+version: '3'
+services:
+
+  react-api:
+    image: lab-react-application-api
+    container_name: lab-react-application-api
+    build: ./api
+    restart: always
+    env_file:
+      - ./api/application.env
+    ports:
+      - '8085:8085'
+    depends_on:
+      - mongodb
+
+
+  react-ui:
+    image: lab-react-application-ui
+    container_name: lab-react-application-ui
+    build: ./ui
+    restart: on-failure
+    depends_on:
+      - mongodb
+      - react-api
+    ports:
+      - "3000:3000"
+    volumes:
+      - /app/node_modules
+
+
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb
+    ports:
+      - '27017-27019:27017-27019'

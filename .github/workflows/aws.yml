@@ -16,16 +16,16 @@ jobs:
       - name: Check out code
         uses: actions/checkout@v2
 
-      # - name: Configure AWS credentials
-      #   uses: aws-actions/configure-aws-credentials@v1
-      #   with:
-      #     aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-      #     aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      #     aws-region: eu-central-1
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: eu-central-1
 
-      # - name: Login to Amazon ECR
-      #   id: login-ecr
-      #   uses: aws-actions/amazon-ecr-login@v1
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
 
       - name: Build, tag, and push API image to Amazon ECR
         id: build-image-api
@@ -34,10 +34,10 @@ jobs:
           ECR_REPOSITORY: lab-application-backend
           IMAGE_TAG: lab-application-backend
         run: |
-          docker build -t public.ecr.aws/p9j5e2w4/lab-app-backend:v1.0 ./api
+          docker build -t 609050058821.dkr.ecr.eu-central-1.amazonaws.com/lab-app-back-v1:v1.0 ./api
           echo "Pushing image to ECR..."
-          docker push public.ecr.aws/p9j5e2w4/lab-app-backend:v1.0
-          echo ":: set-output name=image::public.ecr.aws/p9j5e2w4/lab-app-backend:1.0"
+          docker push 609050058821.dkr.ecr.eu-central-1.amazonaws.com/lab-app-back-v1:v1.0
+          echo ":: set-output name=image::609050058821.dkr.ecr.eu-central-1.amazonaws.com/lab-app-back-v1/deploy:1.0"
           
       - name: Build, tag, and push UI image to Amazon ECR
         id: build-image-ui
@@ -46,14 +46,14 @@ jobs:
           ECR_REPOSITORY: lab-application-frontend
           IMAGE_TAG: lab-application-frontend
         run: |
-          docker build -t public.ecr.aws/p9j5e2w4/lab-app-frontend:v1.0 ./ui
+          docker build -t 609050058821.dkr.ecr.eu-central-1.amazonaws.com/lab-app-front-v1:v1.0 ./ui
           echo "Pushing image to ECR..."
-          docker push public.ecr.aws/p9j5e2w4/lab-app-frontend:v1.0
-          echo ":: set-output name=image::public.ecr.aws/p9j5e2w4/lab-app-frontend/deploy:1.0"    
+          docker push 609050058821.dkr.ecr.eu-central-1.amazonaws.com/lab-app-front-v1:v1.0
+          echo ":: set-output name=image::609050058821.dkr.ecr.eu-central-1.amazonaws.com/lab-app-front-v1/deploy:1.0"    
 
       - name: Remove old versions
         uses: LeiaInc/devops-delete-old-aws-ecr-images@v1
         with:
-          repo-name: public.ecr.aws/p9j5e2w4/lab-app-frontend
+          repo-name: 609050058821.dkr.ecr.eu-central-1.amazonaws.com/lab-app-front-v1
           qtd-images: 2 
           
